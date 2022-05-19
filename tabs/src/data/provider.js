@@ -1,6 +1,5 @@
-import { apiGet, apiPost, apiPatch, getConfiguration } from './apiProvider';
-import { getSPUserByMail } from './sharepointProvider';
-import messages from "./messages.json";
+import { apiGet, apiPatch, getConfiguration } from './apiProvider';
+import { getSPUserByMail, getOrganisationList } from './sharepointProvider';
 
 function wrapError(err, message) {
     return {
@@ -10,22 +9,47 @@ function wrapError(err, message) {
     }
 }
 
+var genderList = [
+    { id: "Male", label: "Mr." }, { id: "Female", label: "Ms." }
+];
+
 var _profile = undefined;
 export async function getMe() {
     if (!_profile) {
         const config = await getConfiguration(),
-            response = await apiGet("me?$select=id,displayName,mail,mobilePhone,country", "user"),
-            groups = await apiGet("me/memberOf", "user");
+            response = await apiGet("me?$select=id,displayName,mail,mobilePhone,country", "user");
 
-        const profile = response.graphClientMessage;
-        if (groups.graphClientMessage) {
-            let groupsList = groups.graphClientMessage.value;
+        const myProfile = response.graphClientMessage;
+        if (myProfile) {
+            const userData = await getUserByMail(myProfile.mail);
+            if (userData.IsValid) {
+                let spUser = userData.SharepointUser,
+                    organisations = await getOrganisationList(spUser.fields.Country),
+                    organisation = organisations.find((o) => o.content === spUser.fields.OrganisationLookupId);
 
-            profile.isAdmin = groupsList.some(group => { return group.id === config.AdminGroupId });
-            profile.isNFP = !profile.isAdmin && groupsList.some(group => { return group.id === config.NFPGroupId });
-            profile.isGuest = !profile.isAdmin && !profile.isNFP;
+                _profile = {
+                    Title: spUser.fields.Title,
+                    Phone: spUser.fields.Phone,
+                    Email: spUser.fields.Email,
+                    Country: spUser.fields.Country,
+                    Memberships: spUser.fields.Membership,
+                    OtherMemberships: spUser.fields.OtherMemberships,
+                    FirstName: userData.ADUser.givenName,
+                    LastName: userData.ADUser.surname,
+                    Gender: spUser.fields.Gender,
+                    GenderTitle: spUser.fields.Gender ? genderList.find((g) => g.id === spUser.fields.Gender).label : '',
+                    OrganisationLookupId: spUser.fields.OrganisationLookupId,
+                    Organisation: organisation ? organisation.header : "",
+                    NFP: spUser.fields.NFP,
+                    SuggestedOrganisation: spUser.fields.SuggestedOrganisation,
+                    id: spUser.fields.id,
+                    IsValid: true,
+                    ADUserId: spUser.fields.ADUserId,
+                    SelfSeviceHelpdeskPreferencesText: config.SelfSeviceHelpdeskPreferencesText,
+                    SelfSeviceHelpdeskPersonalDetailsText: config.SelfSeviceHelpdeskPersonalDetailsText
+                };
+            }
         }
-        _profile = profile;
     }
     return _profile;
 }
@@ -41,124 +65,62 @@ export async function getUserByMail(email) {
         return {
             ADUser: adUser,
             SharepointUser: spUser,
-            Continue: (!adUser && !spUser) || (adUser && !spUser),
+            IsValid: adUser !== undefined && spUser !== undefined,
         }
     }
     catch (err) {
+        wrapError(err, "getUserByMail");
         console.log(err);
         return undefined;
     }
 }
 
-export async function getUser(userId) {
-    try {
-        const response = await apiGet("/users/" + userId);
-        return response.graphClientMessage;
-    }
-    catch (err) {
-        console.log(err);
-        return undefined;
-    }
-}
-
-
-async function saveADUser(userId, userData) {
+async function saveADUser(userData) {
     let displayName = userData.FirstName + ' ' + userData.LastName + ' (' + userData.Country + ')';
     if (userData.NFP) {
         displayName = userData.FirstName + ' ' + userData.LastName + ' (NFP-' + userData.Country + ')';
     }
-    await apiPatch("/users/" + userId, {
+    await apiPatch("/users/" + userData.ADUserId, {
         givenName: userData.FirstName,
         surname: userData.LastName,
         displayName: displayName,
-        department: 'Eionet',
-        country: userData.Country
+        department: 'Eionet'
     });
 }
 
-async function sendOrgSuggestionNotification(info) {
-    const config = await getConfiguration();
-    if (config.HelpdeskEmail) {
-        try {
-            await apiPost("users/" + config.FromEmailAddress + "/sendMail",
-                {
-                    message: {
-                        subject: config.NewOrganisationSuggestionSubject,
-                        body: {
-                            contentType: "Text",
-                            content: config.NewOrganisationSuggestionMailBody + "  " + info,
-                        },
-                        toRecipients: [
-                            {
-                                emailAddress: {
-                                    address: config.HelpdeskEmail
-                                }
-                            }
-                        ]
-                    },
-                    saveToSentItems: true
-                });
-        }
-        catch (err) {
-            console.log(err);
-            return false;
-        }
-    }
-}
-
-async function saveSPUser(userId, userData, newYN) {
+async function saveSPUser(userData) {
     const spConfig = await getConfiguration();
     let fields =
     {
         fields: {
             Phone: userData.Phone,
-            Email: userData.Email,
-            Country: userData.Country,
-            ...userData.Membership && {
-                "Membership@odata.type": "Collection(Edm.String)",
-                Membership: userData.Membership
-            },
-            ...userData.OtherMemberships && {
-                "OtherMemberships@odata.type": "Collection(Edm.String)",
-                OtherMemberships: userData.OtherMemberships,
-            },
             Title: userData.FirstName + ' ' + userData.LastName,
             Gender: userData.Gender,
-            Organisation: userData.Organisation,
-            OrganisationLookupId: userData.OrganisationLookupId,
-            ADUserId: userId,
-            NFP: userData.NFP,
-            SuggestedOrganisation: userData.SuggestedOrganisation,
         }
     };
 
-    let graphURL = "/sites/" + spConfig.SharepointSiteId + "/lists/" + spConfig.UserListId + "/items";
-    if (newYN) {
-        await apiPost(graphURL, fields);
-    } else {
-        graphURL += "/" + userData.id;
-        await apiPatch(graphURL, fields);
-    }
+    let graphURL = "/sites/" + spConfig.SharepointSiteId + "/lists/" + spConfig.UserListId + "/items/" + userData.id;
+    await apiPatch(graphURL, fields);
 
-    if (userData.SuggestedOrganisation) {
-        sendOrgSuggestionNotification(userData.SuggestedOrganisation);
-    }
 }
 
-
-
-export async function editUser(user, mappings, oldValues) {
+export async function saveData(user) {
     try {
-
-        await saveADUser(user.ADUserId, user);
-        await saveSPUser(user.ADUserId, user, false);
-
-        return true;
+        await saveADUser(user);
     }
     catch (err) {
-        console.log(err);
-        return false;
+        return wrapError(err, "saveADUser")
     }
+
+    try {
+        await saveSPUser(user);
+    }
+    catch (err) {
+        return wrapError(err, "saveSPUser")
+    }
+
+    return { Success: true };
+
 }
 
 

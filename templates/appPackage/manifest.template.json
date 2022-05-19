@@ -38,7 +38,7 @@
     "staticTabs": [
         {
             "entityId": "self",
-            "name": "EIONET Self Service",
+            "name": "EIONET member self-service",
             "contentUrl": "{{{state.fx-resource-frontend-hosting.endpoint}}}/index.html#/tab",
             "websiteUrl": "{{{state.fx-resource-frontend-hosting.endpoint}}}/index.html#/tab",
             "scopes": [

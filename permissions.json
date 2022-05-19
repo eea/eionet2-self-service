@@ -7,11 +7,7 @@
         "application": [
             "User.Read.All",
             "Sites.ReadWrite.All",
-            "Domain.ReadWrite.All",
-            "Directory.ReadWrite.All",
-            "TeamMember.ReadWrite.All",
-            "TeamSettings.ReadWrite.All",
-            "Mail.Send"
+            "Domain.ReadWrite.All"
         ]
     }
 ]

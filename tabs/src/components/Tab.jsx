@@ -6,25 +6,15 @@ import { Backdrop, CircularProgress } from "@mui/material";
 var showFunction = Boolean(process.env.REACT_APP_FUNC_NAME);
 
 export default function Tab() {
-  const [userInfo, setUserInfo] = useState({
-    isAdmin: false,
-    isNFP: false,
-    isGuest: true,
-    country: '',
-    isLoaded: false
-  }),
-    [loading, setloading] = useState(false);
+  const [userInfo, setUserInfo] = useState({}),
+    [loading, setloading] = useState(false),
+    [isValid, setIsValid] = useState(false);;
   useEffect(() => {
     (async () => {
       setloading(true);
       let me = await getMe();
-      setUserInfo({
-        isAdmin: me.isAdmin,
-        isNFP: me.isNFP,
-        isGuest: me.isGuest,
-        country: me.country,
-        isLoaded: true,
-      });
+      setUserInfo(me);
+      setIsValid(me && me.IsValid);
       setloading(false);
     })();
   }, []);
@@ -37,7 +27,7 @@ export default function Tab() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      {userInfo.isLoaded && !userInfo.isGuest && <UserEdit showFunction={showFunction} userInfo={userInfo} />}
+      {!loading && isValid && <UserEdit showFunction={showFunction} user={userInfo} />}
     </div>
   );
 }

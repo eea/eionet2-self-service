@@ -10,7 +10,6 @@ export function validatePhone(value) {
     }
 }
 
-
 export function validateName(value) {
     if (!value) {
         return mandatoryText;
