@@ -5,6 +5,7 @@ import { useTeamsFx } from "./lib/useTeamsFx";
 import Privacy from "./Privacy";
 import TermsOfUse from "./TermsOfUse";
 import Tab from "./Tab";
+import TabConfig from "./TabConfig";
 import "./App.css";
 
 /**
@@ -26,6 +27,7 @@ export default function App() {
             <Route exact path="/privacy" component={Privacy} />
             <Route exact path="/termsofuse" component={TermsOfUse} />
             <Route exact path="/tab" component={Tab} />
+            <Route exact path="/config" component={TabConfig} />
           </>
         )}
       </Router>
