@@ -1,14 +1,14 @@
-import { React, useState, useEffect } from "react";
-import { UserEdit } from "./UserEdit";
-import { getMe } from "../data/provider";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { React, useState, useEffect } from 'react';
+import { UserEdit } from './UserEdit';
+import { getMe } from '../data/provider';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 var showFunction = Boolean(process.env.REACT_APP_FUNC_NAME);
 
 export default function Tab() {
   const [userInfo, setUserInfo] = useState({}),
     [loading, setloading] = useState(false),
-    [isValid, setIsValid] = useState(false);;
+    [isValid, setIsValid] = useState(false);
   useEffect(() => {
     (async () => {
       setloading(true);
@@ -27,7 +27,9 @@ export default function Tab() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      {!loading && isValid && <UserEdit showFunction={showFunction} user={userInfo} />}
+      {!loading && isValid && (
+        <UserEdit showFunction={showFunction} user={userInfo} />
+      )}
     </div>
   );
 }

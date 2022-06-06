@@ -1,12 +1,12 @@
-import React from "react";
-import { Provider, teamsTheme, Loader } from "@fluentui/react-northstar";
-import { HashRouter as Router, Redirect, Route } from "react-router-dom";
-import { useTeamsFx } from "./lib/useTeamsFx";
-import Privacy from "./Privacy";
-import TermsOfUse from "./TermsOfUse";
-import Tab from "./Tab";
-import TabConfig from "./TabConfig";
-import "./App.css";
+import React from 'react';
+import { Provider, teamsTheme, Loader } from '@fluentui/react-northstar';
+import { HashRouter as Router, Redirect, Route } from 'react-router-dom';
+import { useTeamsFx } from './lib/useTeamsFx';
+import Privacy from './Privacy';
+import TermsOfUse from './TermsOfUse';
+import Tab from './Tab';
+import TabConfig from './TabConfig';
+import './App.css';
 
 /**
  * The main app which handles the initialization and routing
@@ -15,7 +15,10 @@ import "./App.css";
 export default function App() {
   const { theme, loading } = useTeamsFx();
   return (
-    <Provider theme={theme || teamsTheme} styles={{ backgroundColor: "#eeeeee" }}>
+    <Provider
+      theme={theme || teamsTheme}
+      styles={{ backgroundColor: '#eeeeee' }}
+    >
       <Router>
         <Route exact path="/">
           <Redirect to="/tab" />
