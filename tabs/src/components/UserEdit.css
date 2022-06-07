@@ -19,16 +19,16 @@
 .paper {
   margin: 8px !important;
   width: 50ch;
-  display: "flex";
-  justify-content: "center";
-  flex-wrap: "wrap";
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .chip {
   margin: 5px;
-  display: "flex";
-  justify-content: "center";
-  flex-wrap: "wrap";
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .main {
@@ -49,7 +49,7 @@
 
 .button {
   margin: 1rem 0 0 0.5rem;
-  position: "relative";
+  position: relative;
 }
 
 .small-width {
