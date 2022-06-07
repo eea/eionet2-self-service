@@ -7,7 +7,8 @@
         "application": [
             "User.Read.All",
             "Sites.ReadWrite.All",
-            "Domain.ReadWrite.All"
+            "Domain.ReadWrite.All",
+            "Directory.ReadWrite.All"
         ]
     }
 ]
