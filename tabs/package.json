@@ -33,7 +33,8 @@
     "stylelint": "^14.8.5",
     "stylelint-config-idiomatic-order": "^8.1.0",
     "stylelint-config-prettier": "^9.0.3",
-    "stylelint-prettier": "^2.0.0"
+    "stylelint-prettier": "^2.0.0",
+    "jest-junit": "^14.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
