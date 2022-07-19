@@ -4,7 +4,7 @@ pipeline {
   }
   environment {
             GIT_NAME = "eionet2-self-service"
-            SONARQUBE_TAGS = "www.eionet.europa.eu"
+            SONARQUBE_TAGS = "eionet2"
             PATH = "${tool 'NodeJS'}/bin:${tool 'SonarQubeScanner'}/bin:$PATH"
  }
   stages{         
@@ -53,15 +53,9 @@ pipeline {
         }
       }
                  steps {
-                         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                            sh "cd tabs; yarn run prettier"
-                         }
-                         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                            sh "cd tabs; yarn run lint"
-                         }
-                         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                            sh "cd tabs; yarn run stylelint"
-                         }
                    }
                }
     
@@ -73,25 +67,29 @@ pipeline {
           not { branch 'master' }
         }
       }
-                 steps {
-                            sh '''set -o pipefail; yarn test --watchAll=false --reporters=default --reporters=jest-junit --collectCoverage --coverageReporters lcov cobertura text 2>&1 | tee -a unit_tests_log.txt'''
-
-                         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-
+                 steps {   
+                            sh '''set -o pipefail;cd tabs; yarn test --watchAll=false --reporters=default --reporters=jest-junit --collectCoverage --coverageReporters lcov cobertura text 2>&1 | tee -a unit_tests_log.txt'''
+                           
+                         }
+                         post {
+                           always {
+                             
+                           catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                            junit 'tabs/junit.xml'
                             publishHTML (target : [allowMissing: false,
                              alwaysLinkToLastBuild: true,
                              keepAll: true,
-                             reportDir: 'coverage/lcov-report',
+                             reportDir: 'tabs/coverage/lcov-report',
                              reportFiles: 'index.html',
                              reportName: 'UTCoverage',
                              reportTitles: 'Unit Tests Code Coverage'])
-                           junit 'junit.xml'
+                             
+                           
                          }
-                         }
-                         post {
+                           }
                            failure {
                               catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                                    archiveArtifacts artifacts: 'unit_tests_log.txt', fingerprint: true
+                                    archiveArtifacts artifacts: 'tabs/unit_tests_log.txt', fingerprint: true
                               }  
                            }
                          }
@@ -115,7 +113,7 @@ pipeline {
       steps {
           script{
             withSonarQubeEnv('Sonarqube') {
-              sh "export PATH=${scannerHome}/bin:${nodeJS}/bin:$PATH; sonar-scanner -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info,./cypress-coverage/coverage/lcov.info -Dsonar.sources=./src -Dsonar.projectKey=$GIT_NAME-$BRANCH_NAME -Dsonar.projectVersion=$BRANCH_NAME-$BUILD_NUMBER"
+              sh "sonar-scanner -Dsonar.javascript.lcov.reportPaths=./tabs/coverage/lcov.info -Dsonar.sources=./tabs,./api -Dsonar.projectKey=$GIT_NAME-$BRANCH_NAME -Dsonar.projectVersion=$BRANCH_NAME-$BUILD_NUMBER"
               sh '''try=2; while [ \$try -gt 0 ]; do curl -s -XPOST -u "${SONAR_AUTH_TOKEN}:" "${SONAR_HOST_URL}api/project_tags/set?project=${GIT_NAME}-${BRANCH_NAME}&tags=${SONARQUBE_TAGS},${BRANCH_NAME}" > set_tags_result; if [ \$(grep -ic error set_tags_result ) -eq 0 ]; then try=0; else cat set_tags_result; echo "... Will retry"; sleep 60; try=\$(( \$try - 1 )); fi; done'''
             }
         }
