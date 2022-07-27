@@ -1,7 +1,8 @@
 {
-  "name": "teamsfx-template-tab",
+  "name": "eionet2-self-service",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
+  "description": "Teams app that offers users the option to manage/update their data themselves, as well as set certain preferences with links to other systems such as the EEA email marketing/CRM tools.",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -39,6 +40,7 @@
     "stylelint-prettier": "^2.0.0"
   },
   "scripts": {
+    "prepare": "npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:teamsfx": "cross-env-shell \"env-cmd -f .env.teamsfx.${TEAMS_FX_ENV} npm run build\"",
