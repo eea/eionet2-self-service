@@ -40,7 +40,6 @@
     "stylelint-prettier": "^2.0.0"
   },
   "scripts": {
-    "prepare": "npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:teamsfx": "cross-env-shell \"env-cmd -f .env.teamsfx.${TEAMS_FX_ENV} npm run build\"",

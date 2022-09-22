@@ -1,4 +1,4 @@
-import { apiGet, apiPatch, getConfiguration } from './apiProvider';
+import { apiGet, apiPatch, getConfiguration, logInfo } from './apiProvider';
 import { getSPUserByMail, getOrganisationList } from './sharepointProvider';
 
 function wrapError(err, message) {
@@ -141,6 +141,7 @@ export async function saveData(user) {
 
   try {
     await saveSPUser(user);
+    await logInfo('User edited information', '', user, 'Edit user');
   } catch (err) {
     return wrapError(err, 'saveSPUser');
   }

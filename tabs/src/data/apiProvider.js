@@ -31,7 +31,7 @@ export async function apiGet(path, credentialType = 'app') {
       credentialType: credentialType,
     });
   } catch (err) {
-    logEvent(err, path, null);
+    logError(err, path, null);
     throw err;
   }
 }
@@ -44,7 +44,7 @@ export async function apiPost(path, data, credentialType = 'app') {
       path: path,
     });
   } catch (err) {
-    logEvent(err, path, data);
+    logError(err, path, data);
     throw err;
   }
 }
@@ -57,29 +57,28 @@ export async function apiPatch(path, data, credentialType = 'app') {
       path: path,
     });
   } catch (err) {
-    logEvent(err, path, data);
+    logError(err, path, data);
     throw err;
   }
 }
 
-var _userId = undefined;
-export async function getUserId() {
-  if (!_userId) {
+var _userMail = undefined;
+export async function getUserMail() {
+  if (!_userMail) {
     const response = await apiGet(
       'me?$select=id,displayName,mail,mobilePhone,country',
       'user'
     );
 
     if (response.graphClientMessage) {
-      _userId = response.graphClientMessage.id;
+      _userMail = response.graphClientMessage._userMail;
     }
   }
-  return _userId;
+  return _userMail;
 }
 
-const sharepointSiteId =
-    '7lcpdm.sharepoint.com,bf9359de-0f13-4b00-8b5a-114f6ef3bfb0,6609a994-5225-4a1d-bd05-a239c7b45f72',
-  configurationListId = '010b1be2-0df5-4ab1-b2a7-17e010aae775';
+const sharepointSiteId = process.env.REACT_APP_SHAREPOINT_SITE_ID,
+  configurationListId = process.env.REACT_APP_CONFIGURATION_LIST_ID;
 
 var _configuration = undefined;
 export async function getConfiguration() {
@@ -105,17 +104,47 @@ export async function getConfiguration() {
   }
 }
 
-async function logEvent(err, apiPath, data) {
+let _applicationName = 'Eionet2-Self-Service';
+
+async function logError(err, apiPath, data) {
   const spConfig = await getConfiguration(),
-    userId = await getUserId();
+    userMail = await getUserMail();
 
   let fields = {
     fields: {
+      ApplicationName: _applicationName,
       ApiPath: apiPath,
       ApiData: JSON.stringify(data),
       Error: err.response?.data?.error?.body,
-      UserId: userId,
-      Timestamp: Date(),
+      UserMail: userMail,
+      Timestamp: new Date(),
+      Logtype: 'Error',
+    },
+  };
+
+  let graphURL =
+    '/sites/' +
+    spConfig.SharepointSiteId +
+    '/lists/' +
+    spConfig.LoggingListId +
+    '/items';
+  await apiPost(graphURL, fields);
+}
+
+export async function logInfo(message, apiPath, data, action) {
+  const spConfig = await getConfiguration(),
+    userMail = await getUserMail();
+
+  let fields = {
+    fields: {
+      ApplicationName: _applicationName,
+      ApiPath: apiPath,
+      ApiData: JSON.stringify(data),
+      Title: message,
+      UserMail: userMail,
+      Timestamp: new Date(),
+      Logtype: 'Info',
+      Action: action,
     },
   };
 
