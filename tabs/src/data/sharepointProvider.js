@@ -33,13 +33,13 @@ export async function getSPUserByMail(email) {
   const config = await getConfiguration();
   try {
     const path =
-      '/sites/' +
-      config.SharepointSiteId +
-      '/lists/' +
-      config.UserListId +
-      "/items?$filter=fields/Email eq '" +
-      email +
-      "'&$expand=fields",
+        '/sites/' +
+        config.SharepointSiteId +
+        '/lists/' +
+        config.UserListId +
+        "/items?$filter=fields/Email eq '" +
+        email +
+        "'&$expand=fields",
       response = await apiGet(path),
       profile = response.graphClientMessage;
     if (profile.value && profile.value.length) {
