@@ -1,11 +1,11 @@
 {
     "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.11/MicrosoftTeams.schema.json",
     "manifestVersion": "1.11",
-    "version": "1.1.9",
+    "version": "1.1.10",
     "id": "{{state.fx-resource-appstudio.teamsAppId}}",
     "packageName": "com.microsoft.teams.extension",
     "developer": {
-        "name": "Teams App, Inc.",
+        "name": "European Environment Agency",
         "websiteUrl": "{{{state.fx-resource-frontend-hosting.endpoint}}}",
         "privacyUrl": "{{{state.fx-resource-frontend-hosting.endpoint}}}/index.html#/privacy",
         "termsOfUseUrl": "{{{state.fx-resource-frontend-hosting.endpoint}}}/index.html#/termsofuse"
@@ -19,8 +19,8 @@
         "full": "{{config.manifest.appName.full}}"
     },
     "description": {
-        "short": "Short description of {{config.manifest.appName.short}}",
-        "full": "Full description of {{config.manifest.appName.short}}"
+        "short": "Alows Eionet Guest users to modify their personal details and preferences",
+        "full": "This app is only relevant for Eionet Guest users, not for EEA staff. More information can be found under https://github.com/eea/eionet2-self-service"
     },
     "accentColor": "#FFFFFF",
     "bots": [],
