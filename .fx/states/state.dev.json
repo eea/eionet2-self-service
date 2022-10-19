@@ -1,46 +1,47 @@
 {
     "solution": {
+        "provisionSucceeded": true,
         "teamsAppTenantId": "3433ca34-11c7-462b-96a9-fd70adcc5bb0",
         "subscriptionId": "83d442da-e921-445b-aa62-df8d53543040",
-        "subscriptionName": "Azure subscription 1",
+        "subscriptionName": "Eionet",
         "tenantId": "3433ca34-11c7-462b-96a9-fd70adcc5bb0",
         "needCreateResourceGroup": false,
-        "resourceGroupName": "ResourceGroup",
+        "resourceGroupName": "DefaultResourceGroup-WEU",
         "location": "westeurope",
-        "resourceNameSuffix": "24887c",
-        "provisionSucceeded": true
+        "resourceNameSuffix": "a1c824"
     },
     "fx-resource-appstudio": {
         "tenantId": "3433ca34-11c7-462b-96a9-fd70adcc5bb0",
-        "teamsAppId": "fff470ab-b69a-4eff-86ff-24d3a460cf3a",
-        "teamsAppUpdatedAt": 1653047553503
-    },
-    "fx-resource-identity": {
-        "identityName": "eionetselfserviceapi",
-        "identityResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/ResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/eionetselfserviceapi",
-        "identityClientId": "586ce6a9-0ab7-4ca3-b7ef-4504564f6e72"
+        "teamsAppId": "9d227fef-f389-43b2-9e25-b8171b6ffa46"
     },
     "fx-resource-aad-app-for-teams": {
-        "clientId": "bca329a9-5f4b-4ed6-9274-8bceabc27127",
+        "clientId": "c85fd78c-df46-4dc8-ac3f-85cad8e4a269",
         "clientSecret": "{{fx-resource-aad-app-for-teams.clientSecret}}",
-        "objectId": "99fdbaa5-7b6f-4a2f-9489-c74083c74a16",
-        "oauth2PermissionScopeId": "bd979ad0-575a-41c9-8ed3-449028efcf0c",
+        "objectId": "40ba884f-0dcf-4482-af17-e2cb25969b66",
+        "oauth2PermissionScopeId": "ac625bb6-06fd-440b-a3fb-e71fb865d0ea",
         "tenantId": "3433ca34-11c7-462b-96a9-fd70adcc5bb0",
         "oauthHost": "https://login.microsoftonline.com",
         "oauthAuthority": "https://login.microsoftonline.com/3433ca34-11c7-462b-96a9-fd70adcc5bb0",
-        "applicationIdUris": "api://eionetselfserviceapitab.z6.web.core.windows.net/bca329a9-5f4b-4ed6-9274-8bceabc27127"
+        "applicationIdUris": "api://eionetselfserviceapitab.z6.web.core.windows.net/c85fd78c-df46-4dc8-ac3f-85cad8e4a269",
+        "frontendEndpoint": "https://eionetselfserviceapitab.z6.web.core.windows.net"
     },
-    "fx-resource-function": {
-        "functionAppResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/ResourceGroup/providers/Microsoft.Web/sites/eionetselfserviceapiapi",
-        "functionEndpoint": "https://eionetselfserviceapiapi.azurewebsites.net"
+    "fx-resource-frontend-hosting": {
+        "indexPath": "/index.html#",
+        "domain": "eionetselfserviceapitab.z6.web.core.windows.net",
+        "endpoint": "https://eionetselfserviceapitab.z6.web.core.windows.net",
+        "storageResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.Storage/storageAccounts/eionetselfserviceapitab"
     },
     "fx-resource-simple-auth": {
         "endpoint": "https://eionetselfserviceapisimpleauth.azurewebsites.net",
-        "webAppResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/ResourceGroup/providers/Microsoft.Web/sites/eionetselfserviceapisimpleAuth"
+        "webAppResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.Web/sites/eionetselfserviceapisimpleAuth"
     },
-    "fx-resource-frontend-hosting": {
-        "domain": "eionetselfserviceapitab.z6.web.core.windows.net",
-        "endpoint": "https://eionetselfserviceapitab.z6.web.core.windows.net",
-        "storageResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/ResourceGroup/providers/Microsoft.Storage/storageAccounts/eionetselfserviceapitab"
+    "fx-resource-identity": {
+        "identityName": "eionetselfserviceapi",
+        "identityResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.ManagedIdentity/userAssignedIdentities/eionetselfserviceapi",
+        "identityClientId": "146239ae-33d4-44a6-b75c-be1c3d8cb7ad"
+    },
+    "fx-resource-function": {
+        "functionAppResourceId": "/subscriptions/83d442da-e921-445b-aa62-df8d53543040/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.Web/sites/eionetselfserviceapiapi",
+        "functionEndpoint": "https://eionetselfserviceapiapi.azurewebsites.net"
     }
 }
