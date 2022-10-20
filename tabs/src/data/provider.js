@@ -9,12 +9,12 @@ function wrapError(err, message) {
   };
 }
 
-var genderList = [
+const genderList = [
   { id: 'Male', label: 'Mr.' },
   { id: 'Female', label: 'Ms.' },
 ];
 
-var _profile = undefined;
+let _profile = undefined;
 export async function getMe() {
   if (!_profile) {
     const config = await getConfiguration(),
