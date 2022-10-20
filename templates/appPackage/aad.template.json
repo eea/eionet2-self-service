@@ -21,7 +21,7 @@
             "resourceAppId": "Microsoft Graph",
             "resourceAccess": [
                 {
-                    "id": "User.Read.All",
+                    "id": "User.ReadWrite.All",
                     "type": "Role"
                 },
                 {
