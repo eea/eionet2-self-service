@@ -3,7 +3,7 @@ import { UserEdit } from './UserEdit';
 import { getMe } from '../data/provider';
 import { Backdrop, CircularProgress } from '@mui/material';
 
-var showFunction = Boolean(process.env.REACT_APP_FUNC_NAME);
+const showFunction = Boolean(process.env.REACT_APP_FUNC_NAME);
 
 export default function Tab() {
   const [userInfo, setUserInfo] = useState({}),
