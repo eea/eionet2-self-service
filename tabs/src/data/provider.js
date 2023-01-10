@@ -9,11 +9,6 @@ function wrapError(err, message) {
   };
 }
 
-const genderList = [
-  { id: 'Male', label: 'Mr.' },
-  { id: 'Female', label: 'Ms.' },
-];
-
 let _profile = undefined;
 export async function getMe() {
   if (!_profile) {
@@ -43,9 +38,7 @@ export async function getMe() {
           FirstName: userData.ADUser.givenName,
           LastName: userData.ADUser.surname,
           Gender: spUser.fields.Gender,
-          GenderTitle: spUser.fields.Gender
-            ? genderList.find((g) => g.id === spUser.fields.Gender).label
-            : '',
+          GenderTitle: spUser.fields.Gender,
           OrganisationLookupId: spUser.fields.OrganisationLookupId,
           Organisation: organisation ? organisation.header : '',
           NFP: spUser.fields.NFP,

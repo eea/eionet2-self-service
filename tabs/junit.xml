@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="1.575">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-01-10T12:44:27" time="0.462" tests="2">
+    <testcase classname=" validateName" name=" validateName" time="0.001">
+    </testcase>
+    <testcase classname=" validateMandatoryField-alwaysFail" name=" validateMandatoryField-alwaysFail" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-01-10T12:44:27" time="1.33" tests="1">
+    <testcase classname=" getGenderList" name=" getGenderList" time="0.002">
+    </testcase>
+  </testsuite>
+</testsuites>

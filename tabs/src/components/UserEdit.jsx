@@ -1,5 +1,6 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { saveData } from '../data/provider';
+import { getGenderList } from '../data/sharepointProvider';
 import { validateName, validatePhone } from '../data/validator';
 import './UserEdit.css';
 import {
@@ -12,6 +13,7 @@ import {
   Chip,
   Paper,
   InputLabel,
+  Link,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import SaveIcon from '@mui/icons-material/Save';
@@ -20,7 +22,8 @@ export function UserEdit({ user }) {
   const [loading, setLoading] = useState(false),
     [success, setSuccess] = useState(false),
     [warningVisible, setWarningVisible] = useState(false),
-    [warningText, setWarningText] = useState('');
+    [warningText, setWarningText] = useState(''),
+    [genders, setGenders] = useState([]);
 
   const [errors, setErrors] = useState({});
 
@@ -82,6 +85,13 @@ export function UserEdit({ user }) {
       return tempErrors;
     };
 
+  useEffect(() => {
+    (async () => {
+      let loadedGenders = await getGenderList();
+      loadedGenders && setGenders(loadedGenders);
+    })();
+  });
+
   return (
     <div className="main">
       <div>
@@ -109,25 +119,17 @@ export function UserEdit({ user }) {
               disablePortal
               id="combo-box-gender"
               className="small-width"
-              defaultValue={{
-                id: user.Gender,
-                label: user.GenderTitle,
-              }}
-              options={[
-                { id: 'Male', label: 'Mr.' },
-                { id: 'Female', label: 'Ms.' },
-              ]}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
+              defaultValue={user.Gender || ''}
+              options={genders}
               onChange={(e, value) => {
-                user.Gender = value ? value.id : '';
-                user.GenderTitle = value ? value.label : '';
+                user.Gender = value;
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   autoComplete="off"
                   className="small-width"
-                  label="Title"
+                  label="Salutation"
                   variant="standard"
                 />
               )}
@@ -252,7 +254,14 @@ export function UserEdit({ user }) {
           <div className="row">
             <FormLabel className="note-label control">
               Note: If the email or other details needs to be changed, kindly
-              contact Eionet Helpdesk.{' '}
+              contact{' '}
+              <Link
+                className="mail-link"
+                href="mailto:helpdesk@eionet.europa.eu"
+              >
+                Eionet Helpdesk
+              </Link>
+              .
             </FormLabel>
           </div>
           <div className="row">
