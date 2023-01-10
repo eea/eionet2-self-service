@@ -50,3 +50,26 @@ export async function getSPUserByMail(email) {
     console.log(err);
   }
 }
+
+export async function getGenderList() {
+  const config = await getConfiguration();
+  let genders = [];
+  try {
+    const response = await apiGet(
+      '/sites/' +
+        config.SharepointSiteId +
+        '/lists/' +
+        config.UserListId +
+        '/columns'
+    );
+    const columns = response.graphClientMessage.value;
+    let genderColumn = columns.find((column) => column.name === 'Gender');
+    if (genderColumn && genderColumn.choice) {
+      genders = genderColumn.choice.choices;
+    }
+
+    return genders;
+  } catch (err) {
+    console.log(err);
+  }
+}
