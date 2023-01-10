@@ -1,4 +1,3 @@
-const axios = require('axios');
 const apiProvider = require('./apiProvider');
 const provider = require('./sharepointProvider');
 
