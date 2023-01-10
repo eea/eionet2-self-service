@@ -53,13 +53,15 @@ test('getGenderList', () => {
           {
             name: 'Gender',
             choice: {
-              choices: ['Male', 'Female']
-            }
-          }
+              choices: ['Male', 'Female'],
+            },
+          },
         ],
       },
     });
   });
 
-  provider.getGenderList().then((data) => expect(data).toEqual(['Male', 'Female']));
+  provider
+    .getGenderList()
+    .then((data) => expect(data).toEqual(['Male', 'Female']));
 });
