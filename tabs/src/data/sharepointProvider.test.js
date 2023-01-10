@@ -29,3 +29,37 @@ test('getGenderList', () => {
 
   provider.getGenderList().then((data) => expect(data).toEqual([]));
 });
+
+test('getGenderList', () => {
+  apiProvider.getConfiguration.mockImplementation(() => {
+    return Promise.resolve({
+      graphClientMessage: {
+        value: [
+          {
+            fields: {
+              Title: 'SharepointSiteId',
+              Value: '',
+            },
+          },
+        ],
+      },
+    });
+  });
+
+  apiProvider.apiGet.mockImplementation(() => {
+    return Promise.resolve({
+      graphClientMessage: {
+        value: [
+          {
+            name: 'Gender',
+            choice: {
+              choices: ['Male', 'Female']
+            }
+          }
+        ],
+      },
+    });
+  });
+
+  provider.getGenderList().then((data) => expect(data).toEqual(['Male', 'Female']));
+});
