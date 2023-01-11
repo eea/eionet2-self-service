@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { saveData } from '../data/provider';
 import { getGenderList } from '../data/sharepointProvider';
 import { validateName, validatePhone } from '../data/validator';
-import './UserEdit.css';
+import './UserEdit.scss';
 import {
   Box,
   TextField,

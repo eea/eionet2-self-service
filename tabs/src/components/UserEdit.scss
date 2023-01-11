@@ -1,3 +1,5 @@
+@import '../variables.scss';
+
 .error {
   color: red;
 }
@@ -5,10 +7,18 @@
 .row {
   display: flex;
   flex-direction: row;
+
+  @media (max-width: map-get($breakpoints, md)) {
+    flex-direction: column;
+  }
 }
 
 .control {
   margin: 0.35rem;
+
+  @media (max-width: map-get($breakpoints, md)) {
+    width: 100% !important;
+  }
 }
 
 .inputLabel {
