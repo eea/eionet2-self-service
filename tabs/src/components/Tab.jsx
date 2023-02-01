@@ -30,7 +30,17 @@ export default function Tab() {
       {!loading && isValid && (
         <UserEdit showFunction={showFunction} user={userInfo} />
       )}
-      <Typography sx={{ position: 'absolute', bottom: '0', left: '0', width: '100%', zIndex: 1 }}>v{`${process.env.REACT_APP_VERSION}`}</Typography>
+      <Typography
+        sx={{
+          position: 'absolute',
+          bottom: '0',
+          left: '0',
+          width: '100%',
+          zIndex: 1,
+        }}
+      >
+        v{`${process.env.REACT_APP_VERSION}`}
+      </Typography>
     </div>
   );
 }
