@@ -1,5 +1,5 @@
 {
-    "name": "msteams-apps",
+    "name": "eionet2-self-service",
     "version": "0.0.9",
     "description": "",
     "author": "",
@@ -12,7 +12,8 @@
     "devDependencies": {
         "@babel/core": "^7.17.12",
         "@babel/preset-env": "^7.17.12",
-        "@microsoft/teamsfx-cli": "0.*"
+        "@microsoft/teamsfx-cli": "0.*",
+        "jest": "^28.1.0"
     },
     "license": "MIT",
     "dependencies": {

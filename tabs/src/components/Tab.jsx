@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { UserEdit } from './UserEdit';
 import { getMe } from '../data/provider';
-import { Backdrop, CircularProgress } from '@mui/material';
+import { Backdrop, CircularProgress, Typography } from '@mui/material';
 
 const showFunction = Boolean(process.env.REACT_APP_FUNC_NAME);
 
@@ -30,6 +30,7 @@ export default function Tab() {
       {!loading && isValid && (
         <UserEdit showFunction={showFunction} user={userInfo} />
       )}
+      <Typography sx={{ position: 'absolute', bottom: '0', left: '0', width: '100%', zIndex: 1 }}>v{`${process.env.REACT_APP_VERSION}`}</Typography>
     </div>
   );
 }
