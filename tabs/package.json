@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/eionet2-self-service",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "license": "MIT",
   "description": "Teams app that offers users the option to manage/update their data themselves, as well as set certain preferences with links to other systems such as the EEA email marketing/CRM tools.",
   "dependencies": {
