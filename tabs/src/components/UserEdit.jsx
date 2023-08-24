@@ -1,8 +1,12 @@
 import { React, useState, useEffect } from 'react';
 import { saveData } from '../data/provider';
 import { getGenderList } from '../data/sharepointProvider';
-import { validateName, validatePhone } from '../data/validator';
-import './UserEdit.css';
+import {
+  validateMandatoryField,
+  validateName,
+  validatePhone,
+} from '../data/validator';
+import './UserEdit.scss';
 import {
   Box,
   TextField,
@@ -59,6 +63,9 @@ export function UserEdit({ user }) {
         tempErrors = { ...errors };
 
       switch (id) {
+        case 'gender':
+          tempErrors.gender = validateName(user.Gender);
+          break;
         case 'firstName':
           tempErrors.firstName = validateName(user.FirstName);
           break;
@@ -78,6 +85,7 @@ export function UserEdit({ user }) {
     },
     validateForm = () => {
       let tempErrors = { ...errors };
+      tempErrors.gender = validateMandatoryField(user.Gender);
       tempErrors.firstName = validateName(user.FirstName);
       tempErrors.lastName = validateName(user.LastName);
       tempErrors.phone = validatePhone(user.Phone);
@@ -130,7 +138,10 @@ export function UserEdit({ user }) {
                   autoComplete="off"
                   className="small-width"
                   label="Salutation"
-                  variant="standard"
+                  variant="outlined"
+                  error={Boolean(errors?.gender)}
+                  helperText={errors?.gender}
+                  onBlur={validateField}
                 />
               )}
             />
@@ -142,7 +153,7 @@ export function UserEdit({ user }) {
               className="control"
               id="firstName"
               label="First name"
-              variant="standard"
+              variant="outlined"
               defaultValue={user.FirstName}
               onChange={(e) => {
                 user.FirstName = e.target.value;
@@ -159,7 +170,7 @@ export function UserEdit({ user }) {
               className="control"
               id="lastName"
               label="Last name"
-              variant="standard"
+              variant="outlined"
               defaultValue={user.LastName}
               onChange={(e) => {
                 user.LastName = e.target.value;
@@ -175,7 +186,7 @@ export function UserEdit({ user }) {
               className="control"
               id="phone"
               label="Phone"
-              variant="standard"
+              variant="outlined"
               defaultValue={user.Phone}
               onChange={(e) => {
                 user.Phone = e.target.value;
@@ -195,7 +206,7 @@ export function UserEdit({ user }) {
               className="control"
               id="lastName"
               label="Country"
-              variant="standard"
+              variant="outlined"
               defaultValue={user.Country}
             />
             <TextField
@@ -206,7 +217,7 @@ export function UserEdit({ user }) {
               id="email"
               defaultValue={user.Email}
               label="Email"
-              variant="standard"
+              variant="outlined"
             />
             <TextField
               disabled
@@ -215,7 +226,7 @@ export function UserEdit({ user }) {
               className="control"
               id="lastName"
               label="Organisation"
-              variant="standard"
+              variant="outlined"
               defaultValue={user.Organisation}
             />
           </div>
@@ -255,11 +266,8 @@ export function UserEdit({ user }) {
             <FormLabel className="note-label control">
               Note: If the email or other details needs to be changed, kindly
               contact{' '}
-              <Link
-                className="mail-link"
-                href="mailto:helpdesk@eionet.europa.eu"
-              >
-                Eionet Helpdesk
+              <Link className="mail-link" href="mailto:helpdesk@eea.europa.eu">
+                EEA Helpdesk
               </Link>
               .
             </FormLabel>
